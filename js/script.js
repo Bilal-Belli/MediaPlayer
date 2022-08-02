@@ -1,5 +1,4 @@
 let videoList = document.querySelectorAll('.video-list-container .list');
-
 videoList.forEach(vid =>{
    vid.onclick = () =>{
       videoList.forEach(remove =>{remove.classList.remove('active')});
@@ -37,4 +36,9 @@ videoList.forEach(vid =>{
 function myFunction() {
    var x = document.getElementById("myTopnav");
    if (x.className === "topnav") {x.className += " responsive";} 
-   else {x.className = "topnav";}}
+   else {x.className = "topnav";}
+}
+
+function PlayFullScreen() {
+   
+}
