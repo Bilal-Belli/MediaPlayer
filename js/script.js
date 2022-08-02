@@ -12,6 +12,7 @@ videoList.forEach(vid =>{
          imageRender.src = src;
          imageRender.id = 'mediaElementBox';
          imageRender.controls = true; 
+         imageRender.height= 412;
          imageRender.classList.add('main-video');
          const box = document.getElementById('box');
          box.appendChild(imageRender);
@@ -22,6 +23,7 @@ videoList.forEach(vid =>{
          videoRender.src = src;
          videoRender.id = 'mediaElementBox';
          videoRender.controls = true; 
+         videoRender.height= 412;
          videoRender.classList.add('main-video');
          const box = document.getElementById('box');
          box.appendChild(videoRender);
