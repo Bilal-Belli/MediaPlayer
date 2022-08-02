@@ -8,18 +8,44 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
-
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
+<header>
+   <div class="topnav" id="myTopnav">
+      <a href="#home" class="active">Home</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+      <a href="#about">About</a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+</header>
+
 <body>
    
 <div class="container">
 
    <div class="main-video-container">
-      <video src="images/vid-1.mp4" loop controls class="main-video"></video>
+      <div id="box"> <div id="mediaElementBox"></div> </div>
+      <!-- <video src="images/vid-1.mp4" loop controls class="main-video"></video> -->
       <h3 class="main-vid-title">house flood animation</h3>
+      <!-- <img src="images/pixel.jpg" loop controls class="main-video">
+      <h3 class="main-vid-title">pixel image</h3> -->
    </div>
 
    <div class="video-list-container">
+      
+      <div class="list ">
+         <img src="images/pixel.jpg" class="list-video">
+         <h3 class="list-title">pixel image</h3>
+      </div>
+
+      <div class="list ">
+         <img src="images/pixel2.jpg" class="list-video">
+         <h3 class="list-title">pixel imagemmmm</h3>
+      </div>
 
       <div class="list active">
          <video src="images/vid-1.mp4" class="list-video"></video>
