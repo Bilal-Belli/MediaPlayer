@@ -1,6 +1,4 @@
 // after that loading, we use auto change
-// let videoList = document.querySelectorAll('.video-list-container .list');
-
 setInterval( () =>{let videoList = document.querySelectorAll('.video-list-container .list');
 
 videoList.forEach(vid =>{
@@ -8,7 +6,7 @@ videoList.forEach(vid =>{
       videoList.forEach(remove =>{remove.classList.remove('active')});
       vid.classList.add('active');
       let src = vid.querySelector('.list-video').src;
-      let title = vid.querySelector('.list-title').innerHTML; console.log("bilal");
+      let title = vid.querySelector('.list-title').innerHTML;
       if (vid.querySelector('.list-video').tagName == "IMG"){
          document.getElementById('mediaElementBox').remove();
          const imageRender = document.createElement('img');
@@ -37,12 +35,26 @@ videoList.forEach(vid =>{
 })}, 1);
 // 
 /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
-function myFunction() {
+function displayResponsiveNavBarMobile() {
    var x = document.getElementById("myTopnav");
    if (x.className === "topnav") {x.className += " responsive";} 
    else {x.className = "topnav";}
 }
-// 
-function PlayFullScreen() {
-   
-}
+/* Function to open fullscreen mode one element */
+
+   let mainDivElementForFullScreen = document.getElementById("mediaElementBox");
+   setInterval( () =>{
+      mainDivElementForFullScreen = document.getElementById("mediaElementBox");
+      // console.log(mainDivElementForFullScreen);
+   }, 1000);
+   function PlayFullScreen() {
+      if (mainDivElementForFullScreen.requestFullscreen) {
+         mainDivElementForFullScreen.requestFullscreen();
+      } else if (mainDivElementForFullScreen.webkitRequestFullscreen) { /* Safari browser*/
+      mainDivElementForFullScreen.webkitRequestFullscreen();
+      } else if (mainDivElementForFullScreen.msRequestFullscreen) { /* IE11 browser*/
+      mainDivElementForFullScreen.msRequestFullscreen();
+      }
+   }
+let timeForMediaElement = 1000; //get it from json file later
+   setInterval( () =>{}, timeForMediaElement);

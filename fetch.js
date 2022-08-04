@@ -24,24 +24,49 @@ function isFileImage(file) {
  http.onload = function(){
     if(this.readyState == 4 && this.status == 200){
        let mediaS = JSON.parse(this.responseText);
-       let output = "";
+       let outputList = "";
+       let outputMain = "";
+       let i=0;
        for(let item of mediaS){
-          if (isImage(getExtension(item.mediaSource))){ //the is an image
-             output += `
+         i++;
+          if (isImage(getExtension(item.mediaSource))){ //is an image
+            outputList += `
              <div class="list ">
                 <img src="${item.mediaSource}" class="list-video">
                 <h3 class="list-title">${item.mediaTitle}</h3>
              </div>
              `;
-          } else {
-             output += `
+             if (i==1){
+               outputMain += `
+                  <div id="box"> 
+                     <img src="${item.mediaSource}" loop controls id="mediaElementBox" height="412" class="main-video"> 
+                  </div>
+                  <div id="mainTitleDivId">
+                     <h3 class="main-vid-title">${item.mediaTitle}</h3>
+                  </div>
+                  `;
+            }
+          } else { //is a video
+            outputList += `
              <div class="list ">
                 <video src="${item.mediaSource}" class="list-video"></video>
                 <h3 class="list-title">${item.mediaTitle}</h3>
              </div>
              `;
+             if (i==1){
+               outputMain += `
+               <div id="box"> 
+                  <video src="${item.mediaSource}" loop controls id="mediaElementBox" height="412" class="main-video"></video> 
+               </div>
+               <div id="mainTitleDivId">
+                  <h3 class="main-vid-title">${item.mediaTitle}</h3>
+               </div>
+                  `;
+            }
           }
        }
-       document.querySelector(".video-list-container").innerHTML = output;
+       document.querySelector(".video-list-container").innerHTML = outputList;
+
+       document.querySelector('.main-video-container').innerHTML = outputMain;
     }
  }

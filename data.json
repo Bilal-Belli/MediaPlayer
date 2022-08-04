@@ -1,50 +1,62 @@
 [
     {
        "mediaSource": "images/pixel.jpg",
-       "mediaTitle": "pixel image"
+       "mediaTitle": "pixel image",
+       "order": "3"
     },
     {
         "mediaSource": "images/pixel2.jpg",
-        "mediaTitle": "pixel imagemmmm"
+        "mediaTitle": "pixel imagemmmm",
+        "order": "2"
      },
      {
         "mediaSource": "images/vid-1.mp4",
-        "mediaTitle": "house flood animation"
+        "mediaTitle": "house flood animation",
+        "order": "1"
      },
      {
         "mediaSource": "images/vid-2.mp4",
-        "mediaTitle": "zoombie walking animation"
+        "mediaTitle": "zoombie walking animation",
+        "order": "4"
      },
      {
         "mediaSource": "images/vid-3.mp4",
-        "mediaTitle": "emoji falling animation"
+        "mediaTitle": "emoji falling animation",
+        "order": "5"
      },
      {
         "mediaSource": "images/vid-4.mp4",
-        "mediaTitle": "3D town animation"
+        "mediaTitle": "3D town animation",
+        "order": "6"
      },
      {
         "mediaSource": "images/vid-5.mp4",
-        "mediaTitle": "man chasing carrot animation"
+        "mediaTitle": "man chasing carrot animation",
+        "order": "7"
      },
      {
         "mediaSource": "images/vid-6.mp4",
-        "mediaTitle": "door hinge animation"
+        "mediaTitle": "door hinge animation",
+        "order": "8"
      },
      {
         "mediaSource": "images/vid-7.mp4",
-        "mediaTitle": "poeple walking in town animation"
+        "mediaTitle": "poeple walking in town animation",
+        "order": "9"
      },
      {
         "mediaSource": "images/vid-8.mp4",
-        "mediaTitle": "knight chasing virus animation"
+        "mediaTitle": "knight chasing virus animation",
+        "order": "10"
      },
      {
         "mediaSource": "images/vid-9.mp4",
-        "mediaTitle": "3D helicopter animation"
+        "mediaTitle": "3D helicopter animation",
+        "order": "11"
      },
      {
         "mediaSource": "images/test.mp4",
-        "mediaTitle": "test de width"
+        "mediaTitle": "test de width",
+        "order": "12"
      }
  ]
