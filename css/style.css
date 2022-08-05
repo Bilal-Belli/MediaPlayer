@@ -126,6 +126,7 @@ body{
  .topnav a.active {
    background-color: #04AA6D;
    color: white;
+   cursor: pointer;
  }
  .topnav a.active:hover {
    background-color: #32be8b;

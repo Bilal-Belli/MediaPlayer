@@ -1,4 +1,4 @@
-// after that loading, we use auto change
+// After that loading, we use auto change
 setInterval( () =>{let videoList = document.querySelectorAll('.video-list-container .list');
 
 videoList.forEach(vid =>{
@@ -33,28 +33,128 @@ videoList.forEach(vid =>{
       // document.querySelector('.main-video-container .main-video').play();
    };
 })}, 1);
-// 
-/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+
+/* Responsive class to topnav clicks on the icon */
 function displayResponsiveNavBarMobile() {
    var x = document.getElementById("myTopnav");
    if (x.className === "topnav") {x.className += " responsive";} 
    else {x.className = "topnav";}
 }
-/* Function to open fullscreen mode one element */
 
-   let mainDivElementForFullScreen = document.getElementById("mediaElementBox");
-   setInterval( () =>{
-      mainDivElementForFullScreen = document.getElementById("mediaElementBox");
-      // console.log(mainDivElementForFullScreen);
-   }, 1000);
-   function PlayFullScreen() {
-      if (mainDivElementForFullScreen.requestFullscreen) {
-         mainDivElementForFullScreen.requestFullscreen();
-      } else if (mainDivElementForFullScreen.webkitRequestFullscreen) { /* Safari browser*/
-      mainDivElementForFullScreen.webkitRequestFullscreen();
-      } else if (mainDivElementForFullScreen.msRequestFullscreen) { /* IE11 browser*/
-      mainDivElementForFullScreen.msRequestFullscreen();
-      }
+/* Function to open fullscreen mode one element */
+let timeForMediaElement = 1000;
+let vidDur = Number();
+let finish = true;
+let lastPlayOrder = 3;
+let indicatorForFull = false;
+let mainDivElementForFullScreen = document.getElementById("forLOOPdisplayFullS");
+
+setInterval( () =>{
+   // refrech if the main element is changed or order has been changed
+   mainDivElementForFullScreen = document.getElementById("forLOOPdisplayFullS");}, 1000);
+
+function getDuration(){
+   let videoName = document.getElementById("mediaElementBox");
+   videoName.onloadedmetadata = function() {
+   vidDur = Math.floor(videoName.duration) + 2;
    }
-let timeForMediaElement = 1000; //get it from json file later
-   setInterval( () =>{}, timeForMediaElement);
+   return vidDur;
+}
+
+function PlayFullScreen() {
+   if (mainDivElementForFullScreen.requestFullscreen) {
+      mainDivElementForFullScreen.requestFullscreen();
+   } else if (mainDivElementForFullScreen.webkitRequestFullscreen) { /* Safari browser*/
+      mainDivElementForFullScreen.webkitRequestFullscreen();
+   } else if (mainDivElementForFullScreen.msRequestFullscreen) { /* IE11 browser*/
+      mainDivElementForFullScreen.msRequestFullscreen();
+   };
+   if(indicatorForFull == false){
+      indicatorForFull = true;
+   }
+   for (ff=0;ff<4;ff++){
+      callL();
+   }
+}
+
+function repeatedLoop() {
+      finish = false;
+      let http = new XMLHttpRequest();
+      http.open('get', 'data.json', true);
+      http.send();
+      http.onload = function(){
+         if(this.readyState == 4 && this.status == 200){
+            let mediaS = JSON.parse(this.responseText);
+            let outputMain = "";
+            for(let item of mediaS){
+               if ((lastPlayOrder == item.order) && isImage(getExtension(item.mediaSource))){
+                  outputMain += `
+                  <div id="box"> 
+                     <img src="${item.mediaSource}" loop controls id="mediaElementBox" class="main-video"> 
+                  </div>
+                  <div id="mainTitleDivId">
+                     <h3 class="main-vid-title">${item.mediaTitle}</h3>
+                  </div>
+                  `;
+                  break;
+               } else { if ((lastPlayOrder == item.order)){
+                  outputMain += `
+                  <div id="box"> 
+                     <video src="${item.mediaSource}" loop controls id="mediaElementBox" class="main-video"></video> 
+                  </div>
+                  <div id="mainTitleDivId">
+                     <h3 class="main-vid-title">${item.mediaTitle}</h3>
+                  </div>
+                     `;
+                  break;
+               }
+               }
+            }
+            document.querySelector('.main-video-container').innerHTML = outputMain;
+            // timeForMediaElement = getDuration() * 1000;
+            // console.log(timeForMediaElement);
+         }
+      } 
+}
+
+// async function callL(){
+//    if (indicatorForFull == true){
+//          if(finish==true){
+//             finish = false;
+//             setTimeout( () =>{
+//                   repeatedLoop();
+//                   lastPlayOrder++;
+//                   timeForMediaElement = getDuration() * 1000;
+//             }, timeForMediaElement);
+            
+//             console.log(timeForMediaElement);
+//             await sleep(timeForMediaElement);
+//             console.log("bilal");
+//             // console.log(timeForMediaElement);
+//             finish = true;
+//          }
+//    }
+   
+// }
+
+async function callL(){
+   if (indicatorForFull == true && finish==true){
+      finish = false;
+      repeatedLoop();
+      lastPlayOrder++;
+      timeForMediaElement = getDuration() * 1000;
+      console.log(timeForMediaElement);
+      await sleep(timeForMediaElement);
+      console.log("bilal");
+      // console.log(timeForMediaElement);
+      finish = true;   
+   }
+}
+
+function sleep(ms) {
+   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+document.addEventListener('keyup', (e) => {
+   if (e.code === "Escape" && indicatorForFull == true)  {indicatorForFull = false; console.log("indicatorForFull returned to false");}
+ });

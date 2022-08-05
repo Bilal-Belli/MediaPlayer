@@ -66,7 +66,6 @@ function isFileImage(file) {
           }
        }
        document.querySelector(".video-list-container").innerHTML = outputList;
-
        document.querySelector('.main-video-container').innerHTML = outputMain;
     }
  }
