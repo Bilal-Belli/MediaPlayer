@@ -42,7 +42,7 @@ function displayResponsiveNavBarMobile() {
 }
 
 /* Function to open fullscreen mode one element */
-let timeForMediaElement = 1000;
+let timeForMediaElement = Number(1000);
 let vidDur = Number();
 let finish = true;
 let lastPlayOrder = 3;
@@ -61,7 +61,7 @@ function getDuration(){
    return vidDur;
 }
 
-function PlayFullScreen() {
+async function PlayFullScreen() {
    if (mainDivElementForFullScreen.requestFullscreen) {
       mainDivElementForFullScreen.requestFullscreen();
    } else if (mainDivElementForFullScreen.webkitRequestFullscreen) { /* Safari browser*/
@@ -74,10 +74,11 @@ function PlayFullScreen() {
    }
    for (ff=0;ff<4;ff++){
       callL();
+      await sleep(timeForMediaElement);
    }
 }
 
-function repeatedLoop() {
+async function repeatedLoop() {
       finish = false;
       let http = new XMLHttpRequest();
       http.open('get', 'data.json', true);
@@ -111,8 +112,8 @@ function repeatedLoop() {
                }
             }
             document.querySelector('.main-video-container').innerHTML = outputMain;
-            // timeForMediaElement = getDuration() * 1000;
-            // console.log(timeForMediaElement);
+            timeForMediaElement = getDuration() * 1000;
+            console.log(timeForMediaElement);
          }
       } 
 }
@@ -142,10 +143,10 @@ async function callL(){
       finish = false;
       repeatedLoop();
       lastPlayOrder++;
-      timeForMediaElement = getDuration() * 1000;
-      console.log(timeForMediaElement);
-      await sleep(timeForMediaElement);
-      console.log("bilal");
+      // timeForMediaElement = getDuration() * 1000;
+      // console.log(timeForMediaElement);
+      // await sleep(timeForMediaElement);
+      // console.log("bilal");
       // console.log(timeForMediaElement);
       finish = true;   
    }
