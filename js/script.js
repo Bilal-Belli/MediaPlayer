@@ -45,8 +45,9 @@ function displayResponsiveNavBarMobile() {
 let timeForMediaElement = Number(1000);
 let vidDur = Number();
 let finish = true;
-let lastPlayOrder = 3;
+let lastPlayOrder = 0;
 let indicatorForFull = false;
+let numberOfElementsToPlay = 5;//to change later
 let mainDivElementForFullScreen = document.getElementById("forLOOPdisplayFullS");
 
 setInterval( () =>{
@@ -57,7 +58,10 @@ function getDuration(){
    let videoName = document.getElementById("mediaElementBox");
    videoName.onloadedmetadata = function() {
    vidDur = Math.floor(videoName.duration) + 2;
+   // console.log(typeof vidDur);
+   // console.log( vidDur);
    }
+   
    return vidDur;
 }
 
@@ -72,7 +76,7 @@ async function PlayFullScreen() {
    if(indicatorForFull == false){
       indicatorForFull = true;
    }
-   for (ff=0;ff<4;ff++){
+   for (indexForCall=0;indexForCall<numberOfElementsToPlay;indexForCall++){
       callL();
       await sleep(timeForMediaElement);
    }
@@ -113,41 +117,16 @@ async function repeatedLoop() {
             }
             document.querySelector('.main-video-container').innerHTML = outputMain;
             timeForMediaElement = getDuration() * 1000;
-            console.log(timeForMediaElement);
+            // console.log(timeForMediaElement);
          }
       } 
 }
-
-// async function callL(){
-//    if (indicatorForFull == true){
-//          if(finish==true){
-//             finish = false;
-//             setTimeout( () =>{
-//                   repeatedLoop();
-//                   lastPlayOrder++;
-//                   timeForMediaElement = getDuration() * 1000;
-//             }, timeForMediaElement);
-            
-//             console.log(timeForMediaElement);
-//             await sleep(timeForMediaElement);
-//             console.log("bilal");
-//             // console.log(timeForMediaElement);
-//             finish = true;
-//          }
-//    }
-   
-// }
 
 async function callL(){
    if (indicatorForFull == true && finish==true){
       finish = false;
       repeatedLoop();
       lastPlayOrder++;
-      // timeForMediaElement = getDuration() * 1000;
-      // console.log(timeForMediaElement);
-      // await sleep(timeForMediaElement);
-      // console.log("bilal");
-      // console.log(timeForMediaElement);
       finish = true;   
    }
 }
