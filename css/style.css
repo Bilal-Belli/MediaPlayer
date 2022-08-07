@@ -138,14 +138,45 @@ body{
  }
 
 
+.main-video-container input {
+   color: #ffb9b9;
+   background-color: #ddd;
+   cursor: pointer;
+   text-align: center;
+   font-size: 17px;
+   border-radius: 5px;
+   padding: 3px;
+   margin: 2px;
+}
+.main-video-container input:hover {
+   background-color: rgb(202, 200, 200);
+   color: black;
+}
 
+.main-video-container .custom-save-btn{
+   /* background-color: #ddd; */
+   /* cursor: pointer; */
+   text-align: center;
+   /* font-size: 17px; */
+   /* border-radius: 5px; */
+   padding: 3px;
+   margin: 2px;
+}
 
-
-
-
-
-
-
+.main-video-container button {
+   background-color: #ddd;
+   cursor: pointer;
+   text-align: center;
+   font-size: 17px;
+   border-radius: 5px;
+   padding: 3px;
+   margin: 2px;
+}
+.main-video-container button:hover {
+   background-color: #32be8b;
+   cursor: pointer;
+   color: white;
+}
 
 
 @media (max-width:1200px){

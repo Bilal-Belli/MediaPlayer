@@ -48,20 +48,17 @@ let finish = true;
 let lastPlayOrder = 0;
 let indicatorForFull = false;
 let numberOfElementsToPlay = 5;//to change later
-let mainDivElementForFullScreen = document.getElementById("forLOOPdisplayFullS");
+let mainDivElementForFullScreen = document.getElementById("mediaMainDiv");
 
 setInterval( () =>{
    // refrech if the main element is changed or order has been changed
-   mainDivElementForFullScreen = document.getElementById("forLOOPdisplayFullS");}, 1000);
+   mainDivElementForFullScreen = document.getElementById("mediaMainDiv");}, 1000);
 
 function getDuration(){
    let videoName = document.getElementById("mediaElementBox");
    videoName.onloadedmetadata = function() {
    vidDur = Math.floor(videoName.duration) + 2;
-   // console.log(typeof vidDur);
-   // console.log( vidDur);
    }
-   
    return vidDur;
 }
 
