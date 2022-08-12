@@ -17,6 +17,21 @@ videoList.forEach(vid =>{
          imageRender.classList.add('main-video');
          const box = document.getElementById('box');
          box.appendChild(imageRender);
+
+         let http = new XMLHttpRequest();
+         http.open('get', 'data.json', true);
+         http.send();
+         http.onload = function(){
+            if(this.readyState == 4 && this.status == 200){
+               let mediaS = JSON.parse(this.responseText);
+               for(let item of mediaS){
+                  if (src.replace(/^.*[\\\/]/, '') === item.mediaSource.replace(/^.*[\\\/]/, '')){
+                     document.getElementById("titleEntry").value = item.mediaTitle;
+                     document.getElementById("orderEntry").value = item.order;
+                     document.getElementById("timeEntry").value = item.playtime;
+                     break;
+                  }
+               }}}
       }
       else {
          document.getElementById('mediaElementBox').remove();
@@ -28,6 +43,21 @@ videoList.forEach(vid =>{
          videoRender.classList.add('main-video');
          const box = document.getElementById('box');
          box.appendChild(videoRender);
+
+         let http = new XMLHttpRequest();
+         http.open('get', 'data.json', true);
+         http.send();
+         http.onload = function(){
+            if(this.readyState == 4 && this.status == 200){
+               let mediaS = JSON.parse(this.responseText);
+               for(let item of mediaS){
+                  if (src.replace(/^.*[\\\/]/, '') === item.mediaSource.replace(/^.*[\\\/]/, '')){
+                     document.getElementById("titleEntry").value = item.mediaTitle;
+                     document.getElementById("orderEntry").value = item.order;
+                     document.getElementById("timeEntry").value = item.playtime;
+                     break;
+                  }
+               }}}
       }
       document.querySelector('.main-video-container .main-vid-title').innerHTML = title;
       // document.querySelector('.main-video-container .main-video').play();
@@ -135,3 +165,22 @@ function sleep(ms) {
 document.addEventListener('keyup', (e) => {
    if (e.code === "Escape" && indicatorForFull == true)  {indicatorForFull = false; console.log("indicatorForFull returned to false");}
  });
+
+function saveChangesOnJSON(){
+   let src = document.querySelector('.list-video').src;
+   let http = new XMLHttpRequest();
+   http.open('get', 'data.json', true);
+   http.send();
+   http.onload = function(){
+      if(this.readyState == 4 && this.status == 200){
+         let mediaS = JSON.parse(this.responseText);
+         for(let item of mediaS){
+            if (src.replace(/^.*[\\\/]/, '') === item.mediaSource.replace(/^.*[\\\/]/, '')){
+               item.mediaTitle = document.getElementById("titleEntry").value;
+               console.log(item.mediaTitle);
+               // var new_json = JSON.stringify(item);
+               // item.order = document.getElementById("orderEntry").value ;
+               // item.playtime = document.getElementById("timeEntry").value;
+               break;
+            }}}}
+}

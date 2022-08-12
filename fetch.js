@@ -45,6 +45,9 @@ function isFileImage(file) {
                      <h3 class="main-vid-title">${item.mediaTitle}</h3>
                   </div>
                   `;
+               document.getElementById("titleEntry").value = item.mediaTitle;
+               document.getElementById("orderEntry").value = item.order;
+               document.getElementById("timeEntry").value = item.playtime;
             }
           } else { //is a video
             outputList += `
@@ -62,6 +65,9 @@ function isFileImage(file) {
                   <h3 class="main-vid-title">${item.mediaTitle}</h3>
                </div>
                   `;
+               document.getElementById("titleEntry").value = item.mediaTitle;
+               document.getElementById("orderEntry").value = item.order;
+               document.getElementById("timeEntry").value = item.playtime;
             }
           }
        }
