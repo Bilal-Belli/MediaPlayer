@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Shower</title>
+    <!-- custom css file link  -->
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="../public/fetch.js" type="text/javascript"></script>
+</head> 
+<header>
+    <!-- just empty -->
+</header>
+<body>
+    <div class="topnav" id="myTopnav">
+        <a class="active" onclick="PlayFullScreen()">Play Full Screen</a>
+        <a href="#">Upload Media</a>
+        <a href="#">Help</a>
+        <a href="#">About</a>
+        <a href="#" class="icon" onclick="displayResponsiveNavBarMobile()">
+        <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <div class="container">
+        <div class="main-video-container" id="mediaMainDiv">
+            <!-- automatic fill -->
+        </div>
+    <div class="video-list-container">
+        <!-- automatic fill -->
+    </div>
+
+    <div class="main-video-container">
+        <label>Media Element Title</label><br><input type="text" id="titleEntry"><br>
+        <label>Play Order</label><br><input type="number" step="1" id="orderEntry"><br>
+        <label>Play Time</label><br><input type="number" step="1" id="timeEntry"><br>
+        <div class="custom-save-btn">
+            <button type="button" onclick="saveChangesOnJSON()">Save</button>
+        </div>
+    </div>
+
+</body>
+<!-- custom js file link  -->
+<script src="../public/js/script.js" type="text/javascript" ></script>
+</html>
