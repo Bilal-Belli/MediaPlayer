@@ -1,3 +1,5 @@
+let src;
+
 // After that loading, we use auto change
 setInterval( () =>{let videoList = document.querySelectorAll('.video-list-container .list');
 
@@ -5,7 +7,7 @@ videoList.forEach(vid =>{
    vid.onclick = () =>{
       videoList.forEach(remove =>{remove.classList.remove('active')});
       vid.classList.add('active');
-      let src = vid.querySelector('.list-video').src;
+      src = vid.querySelector('.list-video').src;
       let title = vid.querySelector('.list-title').innerHTML;
       if (vid.querySelector('.list-video').tagName == "IMG"){
          document.getElementById('mediaElementBox').remove();
@@ -19,7 +21,7 @@ videoList.forEach(vid =>{
          box.appendChild(imageRender);
 
          let http = new XMLHttpRequest();
-         http.open('get', 'data.json', true);
+         http.open('get', '/public/data.json', true);
          http.send();
          http.onload = function(){
             if(this.readyState == 4 && this.status == 200){
@@ -45,7 +47,7 @@ videoList.forEach(vid =>{
          box.appendChild(videoRender);
 
          let http = new XMLHttpRequest();
-         http.open('get', 'data.json', true);
+         http.open('get', '/public/data.json', true);
          http.send();
          http.onload = function(){
             if(this.readyState == 4 && this.status == 200){
@@ -57,7 +59,9 @@ videoList.forEach(vid =>{
                      document.getElementById("timeEntry").value = item.playtime;
                      break;
                   }
-               }}}
+               }
+            }
+         }
       }
       document.querySelector('.main-video-container .main-vid-title').innerHTML = title;
       // document.querySelector('.main-video-container .main-video').play();
@@ -75,9 +79,7 @@ function displayResponsiveNavBarMobile() {
 let timeForMediaElement = Number(1000);
 let vidDur = Number();
 let finish = true;
-let lastPlayOrder = 0;
 let indicatorForFull = false;
-let numberOfElementsToPlay = 5;//to change later
 let mainDivElementForFullScreen = document.getElementById("mediaMainDiv");
 
 setInterval( () =>{
@@ -103,58 +105,63 @@ async function PlayFullScreen() {
    if(indicatorForFull == false){
       indicatorForFull = true;
    }
-   for (indexForCall=0;indexForCall<numberOfElementsToPlay;indexForCall++){
-      callL();
-      await sleep(timeForMediaElement);
-   }
-}
+   let http = new XMLHttpRequest();
+   http.open('get', '/public/data.json', true);
+   http.send();
+   http.onload = async function () {
+      if (this.readyState == 4 && this.status == 200) {
+         let mediaS = JSON.parse(this.responseText);
 
-async function repeatedLoop() {
-      finish = false;
-      let http = new XMLHttpRequest();
-      http.open('get', 'data.json', true);
-      http.send();
-      http.onload = function(){
-         if(this.readyState == 4 && this.status == 200){
-            let mediaS = JSON.parse(this.responseText);
-            let outputMain = "";
-            for(let item of mediaS){
-               if ((lastPlayOrder == item.order) && isImage(getExtension(item.mediaSource))){
-                  outputMain += `
-                  <div id="box"> 
-                     <img src="${item.mediaSource}" loop controls id="mediaElementBox" class="main-video"> 
-                  </div>
-                  <div id="mainTitleDivId">
-                     <h3 class="main-vid-title">${item.mediaTitle}</h3>
-                  </div>
-                  `;
-                  break;
-               } else { if ((lastPlayOrder == item.order)){
-                  outputMain += `
-                  <div id="box"> 
-                     <video src="${item.mediaSource}" loop controls id="mediaElementBox" class="main-video"></video> 
-                  </div>
-                  <div id="mainTitleDivId">
-                     <h3 class="main-vid-title">${item.mediaTitle}</h3>
-                  </div>
-                     `;
-                  break;
-               }
-               }
-            }
-            document.querySelector('.main-video-container').innerHTML = outputMain;
-            timeForMediaElement = getDuration() * 1000;
-            // console.log(timeForMediaElement);
+         mediaS.sort((a, b) => parseInt(a.order) - parseInt(b.order));
+         // Loop through the elements and play each with the correct duration
+         for (let indexForCall = 0; indexForCall < mediaS.length; indexForCall++) {
+         if (indicatorForFull === false) {
+            break; // Stop the loop if indicatorForFull is false
          }
-      } 
+
+         let mediaElement = mediaS[indexForCall];
+         let isImageMedia = isImage(getExtension(mediaElement.mediaSource));
+         let timeForMediaElement = mediaElement.playtime * 1000; // Convert playtime to milliseconds
+
+         callL(mediaElement, isImageMedia, timeForMediaElement);
+         await sleep(timeForMediaElement);
+         }
+      }
+   };
 }
 
-async function callL(){
-   if (indicatorForFull == true && finish==true){
+async function repeatedLoop(mediaElement, isImageMedia, timeForMediaElement) {
+   let outputMain = "";
+   if (isImageMedia) {
+      outputMain += `
+         <div id="box" class="media-container"> 
+            <img src="${mediaElement.mediaSource}" loop controls id="mediaElementBox" class="main-media main-image"> 
+         </div>
+         <div id="mainTitleDivId">
+            <h3 class="main-vid-title">${mediaElement.mediaTitle}</h3>
+         </div>
+      `;
+   } else {
+      outputMain += `
+         <div id="box" class="media-container"> 
+            <video src="${mediaElement.mediaSource}" loop autoplay controls id="mediaElementBox" class="main-media main-video"></video> 
+         </div>
+         <div id="mainTitleDivId">
+            <h3 class="main-vid-title">${mediaElement.mediaTitle}</h3>
+         </div>
+      `;
+   }
+   document.querySelector('.main-video-container').innerHTML = outputMain;
+   timeForMediaElement = mediaElement.playtime * 1000;
+   // console.log(timeForMediaElement);
+}
+
+
+async function callL(mediaElement, isImageMedia, timeForMediaElement){
+   if (indicatorForFull == true && finish == true) {
       finish = false;
-      repeatedLoop();
-      lastPlayOrder++;
-      finish = true;   
+      repeatedLoop(mediaElement, isImageMedia, timeForMediaElement);
+      finish = true;
    }
 }
 
@@ -162,14 +169,17 @@ function sleep(ms) {
    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-document.addEventListener('keyup', (e) => {
-   if (e.code === "Escape" && indicatorForFull == true)  {indicatorForFull = false; console.log("indicatorForFull returned to false");}
- });
+document.addEventListener('fullscreenchange', (e) => {
+   if (!document.fullscreenElement && indicatorForFull === true) {
+      indicatorForFull = false;
+      console.log("indicatorForFull returned to false");
+      window.location.reload(); // Reload the page after changes are saved.
+   }
+});
 
 function saveChangesOnJSON(){
-   let src = document.querySelector('.list-video').src;
    let http = new XMLHttpRequest();
-   http.open('get', 'data.json', true);
+   http.open('get', '/public/data.json', true);
    http.send();
    http.onload = function(){
       if(this.readyState == 4 && this.status == 200){
@@ -177,10 +187,25 @@ function saveChangesOnJSON(){
          for(let item of mediaS){
             if (src.replace(/^.*[\\\/]/, '') === item.mediaSource.replace(/^.*[\\\/]/, '')){
                item.mediaTitle = document.getElementById("titleEntry").value;
-               console.log(item.mediaTitle);
-               // var new_json = JSON.stringify(item);
-               // item.order = document.getElementById("orderEntry").value ;
-               // item.playtime = document.getElementById("timeEntry").value;
+               item.order = document.getElementById("orderEntry").value ;
+               item.playtime = document.getElementById("timeEntry").value;
                break;
-            }}}}
+            }
+         }
+         // Send the modified data back to the server for writing.
+         let updatedJSON = JSON.stringify(mediaS);
+         let httpPost = new XMLHttpRequest();
+         httpPost.open('POST', '/saveData', true); // Route to handle the saving of data in Node.js.
+         httpPost.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+         httpPost.send(updatedJSON);
+         httpPost.onload = function() {
+            if (this.readyState == 4 && this.status == 200) {
+               console.log('Changes saved successfully.');
+               window.location.reload(); // Reload the page after changes are saved.
+            } else {
+               console.error('Error saving changes:', this.status);
+            }
+         };
+      }
+   }
 }
