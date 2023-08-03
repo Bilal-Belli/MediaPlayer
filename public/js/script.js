@@ -19,7 +19,6 @@ videoList.forEach(vid =>{
          imageRender.classList.add('main-video');
          const box = document.getElementById('box');
          box.appendChild(imageRender);
-
          let http = new XMLHttpRequest();
          http.open('get', '/public/data.json', true);
          http.send();
@@ -33,7 +32,9 @@ videoList.forEach(vid =>{
                      document.getElementById("timeEntry").value = item.playtime;
                      break;
                   }
-               }}}
+               }
+            }
+         }
       }
       else {
          document.getElementById('mediaElementBox').remove();
@@ -45,7 +46,6 @@ videoList.forEach(vid =>{
          videoRender.classList.add('main-video');
          const box = document.getElementById('box');
          box.appendChild(videoRender);
-
          let http = new XMLHttpRequest();
          http.open('get', '/public/data.json', true);
          http.send();
@@ -64,7 +64,6 @@ videoList.forEach(vid =>{
          }
       }
       document.querySelector('.main-video-container .main-vid-title').innerHTML = title;
-      // document.querySelector('.main-video-container .main-video').play();
    };
 })}, 1);
 
@@ -111,18 +110,15 @@ async function PlayFullScreen() {
    http.onload = async function () {
       if (this.readyState == 4 && this.status == 200) {
          let mediaS = JSON.parse(this.responseText);
-
          mediaS.sort((a, b) => parseInt(a.order) - parseInt(b.order));
          // Loop through the elements and play each with the correct duration
          for (let indexForCall = 0; indexForCall < mediaS.length; indexForCall++) {
          if (indicatorForFull === false) {
             break; // Stop the loop if indicatorForFull is false
          }
-
          let mediaElement = mediaS[indexForCall];
          let isImageMedia = isImage(getExtension(mediaElement.mediaSource));
          let timeForMediaElement = mediaElement.playtime * 1000; // Convert playtime to milliseconds
-
          callL(mediaElement, isImageMedia, timeForMediaElement);
          await sleep(timeForMediaElement);
          }
@@ -153,9 +149,7 @@ async function repeatedLoop(mediaElement, isImageMedia, timeForMediaElement) {
    }
    document.querySelector('.main-video-container').innerHTML = outputMain;
    timeForMediaElement = mediaElement.playtime * 1000;
-   // console.log(timeForMediaElement);
 }
-
 
 async function callL(mediaElement, isImageMedia, timeForMediaElement){
    if (indicatorForFull == true && finish == true) {
@@ -171,8 +165,7 @@ function sleep(ms) {
 
 document.addEventListener('fullscreenchange', (e) => {
    if (!document.fullscreenElement && indicatorForFull === true) {
-      indicatorForFull = false;
-      console.log("indicatorForFull returned to false");
+      indicatorForFull = false; // indicatorForFull returned to false
       window.location.reload(); // Reload the page after changes are saved.
    }
 });
@@ -200,7 +193,7 @@ function saveChangesOnJSON(){
          httpPost.send(updatedJSON);
          httpPost.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
-               console.log('Changes saved successfully.');
+               // Changes saved successfully
                window.location.reload(); // Reload the page after changes are saved.
             } else {
                console.error('Error saving changes:', this.status);
@@ -208,6 +201,24 @@ function saveChangesOnJSON(){
          };
       }
    }
+}
+
+function deleteMedia() {
+   let mediaSourceToDelete = src.replace(/^.*[\\\/]/, '');
+   let httpPost = new XMLHttpRequest();
+   httpPost.open('POST', '/deleteMedia', true); // Route to handle media deletion in Node.js.
+   httpPost.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+   let requestData = JSON.stringify({ mediaSourceToDelete: mediaSourceToDelete });
+   httpPost.onload = function() {
+      if (this.readyState == 4 && this.status == 200) {
+         // Object deleted successfully
+         window.location.reload(); // Reload the page after changes are saved.
+      } else {
+         // Error deleting object
+         console.error('Error deleting object:', this.status);
+      }
+   };
+   httpPost.send(requestData);
 }
 
 function uploadMedia() {
@@ -233,7 +244,7 @@ function uploadMedia() {
                httpPost.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                httpPost.onload = function () {
                   if (this.readyState === 4 && this.status === 200) {
-                     console.log("Changes saved successfully.");
+                     // Changes saved successfully
                      copyFile(selectedFile);
                   } else {
                      console.error("Error saving changes:", this.status);
@@ -252,7 +263,7 @@ function copyFile(file) {
    xhr.open("POST", "/copyFile", true);
    xhr.onload = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
-         console.log("File copied successfully.");
+         // File copied successfully
          window.location.reload();
       } else {
          console.error("Error copying file:", xhr.status);

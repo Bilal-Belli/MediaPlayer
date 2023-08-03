@@ -1,25 +1,27 @@
 const express = require('express');
-const app = express();
-const fs = require('fs');
-const bodyParser = require('body-parser'); // Add this line
-
 const path = require("path");
+const fs = require('fs');
 const multer = require("multer");
+const bodyParser = require('body-parser');
+
+const app = express();
 const upload = multer({ dest: "public/media/" });
 
 app.set('view engine', 'ejs');
 app.use('/public', express.static(__dirname + '/public'));
-app.use(bodyParser.json()); // Add this line to parse JSON data from the request body
+app.use(bodyParser.json()); // Allow to parse JSON data from the request body
 
 app.get('/', (req, res) => {
     res.render(__dirname + '/view/index');
 });
 
-// New route to handle the saving of JSON data
+// Handle the saving of JSON data
 app.post('/saveData', (req, res) => {
     try {
         const jsonData = req.body;
-        saveDataToFile(jsonData);
+        const filePath = 'public/data.json';
+        const jsonString = JSON.stringify(jsonData, null, 2);
+        fs.writeFileSync(filePath, jsonString, 'utf8');
         res.status(200).send('Changes saved successfully.');
     } catch (error) {
         console.error('Error saving changes:', error);
@@ -27,10 +29,52 @@ app.post('/saveData', (req, res) => {
     }
 });
 
-function saveDataToFile(jsonData) {
-    const filePath = 'public/data.json';
-    const jsonString = JSON.stringify(jsonData, null, 2);
-    fs.writeFileSync(filePath, jsonString, 'utf8');
+// Handle deleting a media from JSON data file and from media directory
+app.post('/deleteMedia', (req, res) => {
+    const mediaSourceToDelete = req.body.mediaSourceToDelete;
+    // Read the existing JSON file
+    fs.readFile('public/data.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading data.json:', err);
+            return res.status(500).send('Error reading data.json');
+        }
+        try {
+            let mediaS = JSON.parse(data);
+            // Find the index of the object to delete
+            let indexToDelete = mediaS.findIndex(item => {
+                return item.mediaSource.replace(/^.*[\\\/]/, '') === mediaSourceToDelete;
+            });
+            if (indexToDelete !== -1) {
+                mediaS.splice(indexToDelete, 1); // Remove the object from the array
+                // Write the modified JSON back to the file
+                fs.writeFile('public/data.json', JSON.stringify(mediaS), 'utf8', writeErr => {
+                    if (writeErr) {
+                    console.error('Error writing data.json:', writeErr);
+                    return res.status(500).send('Error writing data.json');
+                    }
+                    // delete from media directory
+                    deleteFile(mediaSourceToDelete);
+                    res.status(200).send('Object deleted successfully.');
+                });
+            } else {
+                res.status(404).send('Object not found.');
+            }
+        } catch (parseErr) {
+            console.error('Error parsing JSON:', parseErr);
+            res.status(500).send('Error parsing JSON');
+        }
+    });
+});
+
+function deleteFile(filename) {
+    const filePath = path.join(__dirname, 'public', 'media', filename);
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error('Error deleting file:', err);
+        } else {
+            // File deleted successfully
+        }
+    });
 }
 
 app.post("/saveNewData", (req, res) => {
@@ -57,7 +101,7 @@ app.post("/saveNewData", (req, res) => {
             console.error("Error writing file:", writeErr);
             return res.status(500).send("Error writing file");
             }
-            console.log("Changes saved successfully.");
+            // Changes saved successfully
             res.sendStatus(200);
         });
     });
@@ -73,7 +117,7 @@ app.post("/copyFile", upload.single("file"), (req, res) => {
             console.error("Error copying file:", err);
             return res.status(500).send("Error copying file");
         }
-        console.log("File copied successfully.");
+        // File copied successfully
         res.sendStatus(200);
     });
 });
