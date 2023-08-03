@@ -16,13 +16,16 @@
 </header>
 <body>
     <div class="topnav" id="myTopnav">
-        <a class="active" onclick="PlayFullScreen()">Play Full Screen</a>
-        <a href="#">Upload Media</a>
-        <a href="#">Help</a>
-        <a href="#">About</a>
+        <button class="active" onclick="PlayFullScreen()">Play Full Screen</button>
+        <button id="upload-btn" onclick="uploadMedia()">Upload Media</button>
+        <input type="file" id="file-input" style="display: none;" accept="image/*, video/*" multiple>
+        <button class="hover-trigger">About</button>
+        <div class="popup">This is a web application that allows you to add media elements and let it display the elements randomly and dynamically (it is like an advertising shower).</div>
         <a href="#" class="icon" onclick="displayResponsiveNavBarMobile()">
-        <i class="fa fa-bars"></i>
+            <i class="fa fa-bars"></i>
         </a>
+
+        
     </div>
     <div class="container">
         <div class="main-video-container" id="mediaMainDiv">
@@ -37,7 +40,10 @@
         <label>Play Order</label><br><input type="number" step="1" id="orderEntry"><br>
         <label>Play Time</label><br><input type="number" step="1" id="timeEntry"><br>
         <div class="custom-save-btn">
-            <button type="button" onclick="saveChangesOnJSON()">Save</button>
+            <button type="button" onclick="saveChangesOnJSON()">Save changes</button>
+        </div>
+        <div class="custom-delete-btn">
+            <button type="button" class="delete-btn">Delete media</button>
         </div>
     </div>
 
