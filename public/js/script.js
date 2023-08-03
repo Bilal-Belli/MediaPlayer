@@ -210,41 +210,6 @@ function saveChangesOnJSON(){
    }
 }
 
-// function uploadMedia() {
-//    document.getElementById("file-input").click();
-//    let fileInput = document.getElementById("file-input");
-//    fileInput.addEventListener("change", function() {
-//       let selectedFiles = this.files;
-//       if (selectedFiles.length > 0) {
-//          for (let i = 0; i < selectedFiles.length; i++) {
-//             let selectedFile = selectedFiles[i];
-//             let mediaSource = `/public/media/${selectedFile.name}`;
-//             let mediaTitle = selectedFile.name.split(".")[0];
-//             let order = "10";
-//             let playtime = "5";
-//             let jsonObject = {
-//                mediaSource: mediaSource,
-//                mediaTitle: mediaTitle,
-//                order: order,
-//                playtime: playtime
-//             };
-//             // console.log(jsonObject);
-//             const httpPost = new XMLHttpRequest();
-//             httpPost.open("POST", "/saveNewData", true); // Route to handle the saving of data in Node.js.
-//             httpPost.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-//             httpPost.onload = function () {
-//                if (this.readyState == 4 && this.status == 200) {
-//                console.log("Changes saved successfully.");
-//                window.location.reload(); // Reload the page after changes are saved.
-//                } else {
-//                console.error("Error saving changes:", this.status);
-//                }
-//             };
-//             httpPost.send(JSON.stringify(jsonObject));
-//          }
-//       }
-//    });
-// }
 function uploadMedia() {
    document.getElementById("file-input").click();
    let fileInput = document.getElementById("file-input");
