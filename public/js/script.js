@@ -203,24 +203,6 @@ function saveChangesOnJSON(){
    }
 }
 
-function deleteMedia() {
-   let mediaSourceToDelete = src.replace(/^.*[\\\/]/, '');
-   let httpPost = new XMLHttpRequest();
-   httpPost.open('POST', '/deleteMedia', true); // Route to handle media deletion in Node.js.
-   httpPost.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-   let requestData = JSON.stringify({ mediaSourceToDelete: mediaSourceToDelete });
-   httpPost.onload = function() {
-      if (this.readyState == 4 && this.status == 200) {
-         // Object deleted successfully
-         window.location.reload(); // Reload the page after changes are saved.
-      } else {
-         // Error deleting object
-         console.error('Error deleting object:', this.status);
-      }
-   };
-   httpPost.send(requestData);
-}
-
 function uploadMedia() {
    document.getElementById("file-input").click();
    let fileInput = document.getElementById("file-input");
@@ -270,4 +252,22 @@ function copyFile(file) {
       }
    };
    xhr.send(formData);
+}
+
+function deleteMedia() {
+   let mediaSourceToDelete = src.replace(/^.*[\\\/]/, '');
+   let httpPost = new XMLHttpRequest();
+   httpPost.open('POST', '/deleteMedia', true); // Route to handle media deletion in Node.js.
+   httpPost.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+   let requestData = JSON.stringify({ mediaSourceToDelete: mediaSourceToDelete });
+   httpPost.onload = function() {
+      if (this.readyState == 4 && this.status == 200) {
+         // Object deleted successfully
+         window.location.reload(); // Reload the page after changes are saved.
+      } else {
+         // Error deleting object
+         console.error('Error deleting object:', this.status);
+      }
+   };
+   httpPost.send(requestData);
 }
