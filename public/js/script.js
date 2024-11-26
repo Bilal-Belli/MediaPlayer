@@ -209,33 +209,54 @@ function uploadMedia() {
    fileInput.addEventListener("change", function () {
       let selectedFiles = this.files;
       if (selectedFiles.length > 0) {
-         for (let i = 0; i < selectedFiles.length; i++) {
-               let selectedFile = selectedFiles[i];
-               let mediaSource = `/public/media/${selectedFile.name}`;
-               let mediaTitle = selectedFile.name.split(".")[0];
-               let order = "10";
-               let playtime = "5";
-               let jsonObject = {
-                  mediaSource: mediaSource,
-                  mediaTitle: mediaTitle,
-                  order: order,
-                  playtime: playtime
-               };
-               const httpPost = new XMLHttpRequest();
-               httpPost.open("POST", "/saveNewData", true);
-               httpPost.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-               httpPost.onload = function () {
-                  if (this.readyState === 4 && this.status === 200) {
-                     // Changes saved successfully
-                     copyFile(selectedFile);
-                  } else {
-                     console.error("Error saving changes:", this.status);
-                  }
-               };
-               httpPost.send(JSON.stringify(jsonObject));
-         }
+         // Show popup for the first file
+         showPopup(selectedFiles[0]);
       }
    });
+}
+
+function showPopup(file) {
+   // Save the current file globally for later use
+   window.currentFile = file;
+   document.getElementById("popup-modal").style.display = "block";
+}
+
+function closePopup() {
+   document.getElementById("popup-modal").style.display = "none";
+}
+
+function submitPopupData() {
+   let order = document.getElementById("popup-order").value;
+   let playtime = document.getElementById("popup-playtime").value;
+
+   if (!order || !playtime) {
+      alert("Order and playtime are required!");
+      return;
+   }
+
+   let selectedFile = window.currentFile;
+   let mediaSource = `/public/media/${selectedFile.name}`;
+   let mediaTitle = selectedFile.name.split(".")[0];
+   let jsonObject = {
+      mediaSource: mediaSource,
+      mediaTitle: mediaTitle,
+      order: order,
+      playtime: playtime
+   };
+   const httpPost = new XMLHttpRequest();
+   httpPost.open("POST", "/saveNewData", true);
+   httpPost.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+   httpPost.onload = function () {
+      if (this.readyState === 4 && this.status === 200) {
+         console.log("Changes saved successfully");
+         copyFile(selectedFile);
+      } else {
+         console.error("Error saving changes:", this.status);
+      }
+   };
+   httpPost.send(JSON.stringify(jsonObject));
+
+   closePopup();
 }
 
 function copyFile(file) {

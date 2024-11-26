@@ -20,6 +20,18 @@
             <i class="fa fa-bars"></i>
         </a>
     </div>
+    <div class="modal" id="popup-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h2>Enter Media Details</h2>
+            <label for="popup-order">Play Order</label>
+            <input type="number" id="popup-order" step="1" placeholder="e.g., 10">
+            <label for="popup-playtime">Play Time (seconds)</label>
+            <input type="number" id="popup-playtime" step="1" placeholder="e.g., 5">
+            <button class="submit-btn" onclick="submitPopupData()">Submit</button>
+        </div>
+    </div>
+    
     <div class="container">
         <div class="main-video-container" id="mediaMainDiv">
             <!-- automatic fill -->
