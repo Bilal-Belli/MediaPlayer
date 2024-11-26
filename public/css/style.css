@@ -13,7 +13,7 @@ body{
 }
 .container{
    max-width: 1200px;
-   margin:100px auto;
+   margin:10px auto;
    display: flex;
    flex-wrap: wrap;
    align-items: flex-start;
@@ -125,23 +125,6 @@ body{
 .topnav button.active:hover {
    background-color: #32be8b;
    color: white;
-}
-.popup {
-   display: none;
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   background-color: #f0f0f0;
-   padding: 10px;
-   border: 1px solid #ccc;
-   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-   width: 350px;
-   text-align: center;
-   z-index: 999;
-}
-.hover-trigger:hover + .popup {
-   display: block;
 }
  /* Hide the link that should open and close the topnav on small screens */
 .topnav .icon {
