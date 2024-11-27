@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const path = require("path");
 const fs = require('fs');
@@ -122,7 +124,8 @@ app.post("/copyFile", upload.single("file"), (req, res) => {
     });
 });
 
+const PORT = process.env.PORT || 3000;
 // Start the server
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log('Server started on port 3000');
 });
